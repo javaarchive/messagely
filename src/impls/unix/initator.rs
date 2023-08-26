@@ -1,6 +1,8 @@
 use async_trait::async_trait;
 
-use crate::network::{context::ManagerContext, initiator::Initiator};
+use crate::network::{context::ManagerContext, initiator::Initiator, connection::Connection};
+
+use super::transport::UnixTransport;
 
 struct UnixInitator {
     pub path: String,
@@ -21,6 +23,8 @@ impl Initiator for UnixInitator {
             loop {
                 let (mut socket, _) = listener.accept().await.unwrap();
                 // build new connection and add to connections
+                let conn = Connection::new(Box::new(UnixTransport::new(socket)), context.clone());
+                context.connections.lock().unwrap().push(conn);
             }
         });
     }

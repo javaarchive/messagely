@@ -3,7 +3,7 @@ use tokio::{net::UnixStream, io::{Interest, AsyncReadExt, AsyncWriteExt}};
 
 use crate::network::transport::Transport;
 
-struct UnixTransport {
+pub struct UnixTransport {
     socket: UnixStream,
 }
 
